@@ -1,0 +1,9 @@
+{
+	"servers": {
+		"next-js-mcp": {
+			"url": "http://localhost:3000/_next/mcp",
+			"type": "http"
+		}
+	},
+	"inputs": []
+}
