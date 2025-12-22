@@ -49,7 +49,7 @@ Reference: https://nextjs.org/docs/app/guides/mcp
   - Example home page: `app/page.tsx`
   - Layouts: `app/layout.tsx`
   - Route handlers: `app/<route>/route.ts`
-- Import alias: `@/*` maps to project root (see `tsconfig.json`). Prefer `import X from '@/path/to/X'`.
+- Import alias: `@/*` maps to project root (see `tsconfig.json`). Always use absolute imports like `import X from '@/path/to/X'`.
 - Client vs Server Components:
   - Use `"use client"` at the top for components that need React hooks, browser APIs, or event handlers.
   - Server Components fetch data and run on the server by default.
@@ -73,6 +73,18 @@ Reference: https://nextjs.org/docs/app/guides/mcp
   - `jest-environment-jsdom`
   - `@testing-library/react` + `@testing-library/jest-dom`
 - Place tests under `__tests__/`, e.g. `__tests__/Hello.test.tsx`.
+
+## Absolute Imports
+
+- Setup:
+  - TypeScript: `compilerOptions.baseUrl` is set to `.` and `paths` maps `@/*` to project root in [tsconfig.json](tsconfig.json).
+  - Jest: `moduleNameMapper` resolves `^@/(.*)$` to `<rootDir>/$1` in [jest.config.cjs](jest.config.cjs).
+- Usage:
+  - Use `@/` for all internal imports in TS/TSX and tests.
+  - Example: `import Hello from '@/components/Hello'` instead of `../components/Hello`.
+  - CSS: you may also import via `@/` (e.g., `import '@/app/globals.css'`) to stay consistent.
+- Migration tip:
+  - If you add new folders, no config changes are needed—`@/*` already covers the entire repo root.
 
 ## Common Agent Tasks (Examples)
 
