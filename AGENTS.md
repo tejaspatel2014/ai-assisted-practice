@@ -121,6 +121,24 @@ Reference: https://nextjs.org/docs/app/guides/mcp
   - Introduce non-Next.js routing libraries
   - Break server/client boundaries (hooks in Server Components)
 
+## Images: Safe Fallbacks
+
+- Always guard `next/image` `src` values. Remote APIs may return missing or empty image URLs.
+- Use a local placeholder when `src` is falsy or blank, e.g. `/avatar-placeholder.svg` in `public/`.
+- Example:
+
+```tsx
+<Image
+  src={(user.avatar_url && user.avatar_url.trim()) || "/avatar-placeholder.svg"}
+  alt={user.login}
+  width={64}
+  height={64}
+  className="h-16 w-16 rounded-full"
+/>
+```
+
+- For remote images, consider configuring `images.remotePatterns` in `next.config.ts` to explicitly allow domains like `avatars.githubusercontent.com`.
+
 ## Helpful Commands
 
 - Dev server:
@@ -141,3 +159,112 @@ Reference: https://nextjs.org/docs/app/guides/mcp
 - Next.js MCP docs: https://nextjs.org/docs/app/guides/mcp
 - Next.js docs: https://nextjs.org/docs
 - MCP spec: https://modelcontextprotocol.io/
+
+## Forms: React Hook Form + Zod
+
+Use `react-hook-form` for lightweight form state and `zod` for schema validation. Client Components must include "use client".
+
+### Install
+
+```bash
+pnpm add react-hook-form zod @hookform/resolvers
+```
+
+### Quick Start (Client Component)
+
+Create a client form with Zod validation and error messages.
+
+```tsx
+"use client";
+
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+
+const schema = z.object({
+  name: z.string().min(2, "Name is too short"),
+  email: z.string().email("Invalid email"),
+});
+
+type FormData = z.infer<typeof schema>;
+
+export default function SimpleForm({
+  onSubmit,
+}: {
+  onSubmit?: (data: FormData) => void;
+}) {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+  } = useForm<FormData>({
+    resolver: zodResolver(schema),
+    mode: "onSubmit",
+  });
+
+  return (
+    <form
+      onSubmit={handleSubmit((data) => onSubmit?.(data))}
+      className="space-y-4 max-w-md">
+      <div>
+        <label className="block text-sm font-medium">Name</label>
+        <input
+          {...register("name")}
+          className="mt-1 w-full rounded border p-2"
+          placeholder="Ada Lovelace"
+        />
+        {errors.name && (
+          <p className="mt-1 text-sm text-red-600">{errors.name.message}</p>
+        )}
+      </div>
+      <div>
+        <label className="block text-sm font-medium">Email</label>
+        <input
+          {...register("email")}
+          className="mt-1 w-full rounded border p-2"
+          placeholder="ada@example.com"
+        />
+        {errors.email && (
+          <p className="mt-1 text-sm text-red-600">{errors.email.message}</p>
+        )}
+      </div>
+      <button
+        type="submit"
+        disabled={isSubmitting}
+        className="rounded bg-foreground px-4 py-2 text-background hover:bg-[#383838] dark:hover:bg-[#ccc]">
+        {isSubmitting ? "Submitting…" : "Submit"}
+      </button>
+    </form>
+  );
+}
+```
+
+### Server Actions Integration
+
+- Define an action with "use server" in a Server Component or imported file.
+- Pass the action to a client form via `form` `action` attribute or call from `handleSubmit`.
+- Validate on both client (Zod) and server (re-validate input) before persisting.
+
+Example server action:
+
+```ts
+"use server";
+import { z } from "zod";
+
+const schema = z.object({ name: z.string().min(2), email: z.string().email() });
+
+export async function saveUser(formData: { name: string; email: string }) {
+  const parsed = schema.safeParse(formData);
+  if (!parsed.success) {
+    throw new Error("Invalid input");
+  }
+  // Persist data (DB/API) here.
+}
+```
+
+### Tips
+
+- Client vs Server: Only Client Components may use `useForm`.
+- Accessibility: Use `<label>` and `aria-invalid` when appropriate.
+- Styling: Prefer Tailwind utilities; avoid inline styles.
+- Testing: Use Testing Library to simulate input/submit and assert error messages.

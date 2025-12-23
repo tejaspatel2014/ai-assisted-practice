@@ -10,9 +10,13 @@
     "test": "jest --config jest.config.cjs --colors"
   },
   "dependencies": {
+    "@hookform/resolvers": "^5.2.2",
     "next": "16.1.0",
     "react": "19.2.3",
-    "react-dom": "19.2.3"
+    "react-dom": "19.2.3",
+    "react-hook-form": "^7.69.0",
+    "swr": "^2.2.5",
+    "zod": "^3.25.76"
   },
   "devDependencies": {
     "@babel/preset-env": "^7.28.5",
