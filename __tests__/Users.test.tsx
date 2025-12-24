@@ -16,11 +16,9 @@ describe("Users page", () => {
     const input = screen.getByLabelText(/github username/i);
     const submit = screen.getByRole("button", { name: /submit/i });
 
-    // Empty submit
-    fireEvent.click(submit);
-    await waitFor(() =>
-      expect(screen.getByText(/username is required/i)).toBeInTheDocument()
-    );
+    // Empty input should disable submit and show no error
+    expect(submit).toBeDisabled();
+    expect(screen.queryByText(/username is required/i)).not.toBeInTheDocument();
 
     // Invalid characters
     fireEvent.change(input, { target: { value: "bad!name" } });

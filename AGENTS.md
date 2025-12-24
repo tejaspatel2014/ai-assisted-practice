@@ -139,6 +139,41 @@ Reference: https://nextjs.org/docs/app/guides/mcp
 
 - For remote images, consider configuring `images.remotePatterns` in `next.config.ts` to explicitly allow domains like `avatars.githubusercontent.com`.
 
+## TypeScript: No Explicit Any
+
+- Avoid `any` entirely; prefer precise types for API payloads and errors.
+- Use `unknown` for untyped inputs, then narrow via checks or schemas.
+- Define small interfaces for responses; keep them minimal and focused.
+- Parse JSON to `unknown` and cast only after validation/narrowing.
+- If a library forces `any`, isolate it and convert using runtime validation (e.g., Zod).
+
+Example: replace `any` when parsing an error body.
+
+```ts
+type GitHubErrorResponse = {
+  message?: string;
+  documentation_url?: string;
+  error?: string;
+  errors?: Array<{
+    resource?: string;
+    field?: string;
+    code?: string;
+    message?: string;
+  }>;
+};
+
+const text = await res.text();
+let body: unknown;
+try {
+  body = JSON.parse(text);
+} catch {
+  body = undefined;
+}
+
+const err = body as GitHubErrorResponse | undefined;
+const message = err?.error || err?.message || "Request failed";
+```
+
 ## Helpful Commands
 
 - Dev server:

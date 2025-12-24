@@ -1,5 +1,17 @@
 import { NextResponse } from "next/server";
 
+type GitHubErrorResponse = {
+  message?: string;
+  documentation_url?: string;
+  error?: string;
+  errors?: Array<{
+    resource?: string;
+    field?: string;
+    code?: string;
+    message?: string;
+  }>;
+};
+
 export async function GET(req: Request) {
   const url = new URL(req.url);
   const username = url.searchParams.get("username");
@@ -54,9 +66,9 @@ export async function GET(req: Request) {
 
     if (!res.ok) {
       const bodyText = await res.text().catch(() => "");
-      let body: any = undefined;
+      let body: GitHubErrorResponse | undefined;
       try {
-        body = JSON.parse(bodyText);
+        body = JSON.parse(bodyText) as GitHubErrorResponse;
       } catch {
         body = undefined;
       }

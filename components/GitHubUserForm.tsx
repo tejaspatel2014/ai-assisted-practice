@@ -31,11 +31,14 @@ export default function GitHubUserForm({
   const {
     register,
     handleSubmit,
+    watch,
     formState: { errors, isSubmitting },
   } = useForm<FormData>({
     resolver: zodResolver(formSchema),
-    mode: "onSubmit",
+    mode: "onChange",
   });
+
+  const trimmedUsername = (watch("username") || "").trim();
 
   type GitHubUser = {
     login: string;
@@ -100,7 +103,7 @@ export default function GitHubUserForm({
             className="mt-1 w-full rounded border p-2"
             placeholder="octocat"
           />
-          {errors.username && (
+          {trimmedUsername.length > 0 && errors.username && (
             <p className="mt-1 text-sm text-red-600">
               {errors.username.message}
             </p>
@@ -108,8 +111,10 @@ export default function GitHubUserForm({
         </div>
         <button
           type="submit"
-          disabled={isSubmitting}
-          className="rounded bg-foreground px-4 py-2 text-background hover:bg-[#383838] dark:hover:bg-[#ccc]">
+          disabled={
+            isSubmitting || trimmedUsername.length === 0 || !!errors.username
+          }
+          className="rounded bg-foreground px-4 py-2 text-background hover:bg-[#383838] dark:hover:bg-[#ccc] cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed disabled:bg-[#9ca3af] dark:disabled:bg-[#3f3f46]">
           {isSubmitting ? "Submitting…" : "Submit"}
         </button>
       </form>
