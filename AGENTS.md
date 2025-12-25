@@ -131,7 +131,7 @@ Reference: https://nextjs.org/docs/app/guides/mcp
 
 ```tsx
 <Image
-  src={(user.avatar_url && user.avatar_url.trim()) || "/avatar-placeholder.svg"}
+  src={user.avatar_url?.trim() || "/avatar-placeholder.svg"}
   alt={user.login}
   width={64}
   height={64}

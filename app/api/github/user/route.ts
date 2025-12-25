@@ -69,7 +69,18 @@ export async function GET(req: Request) {
       let body: GitHubErrorResponse | undefined;
       try {
         body = JSON.parse(bodyText) as GitHubErrorResponse;
-      } catch {
+      } catch (parseErr) {
+        if (process.env.NODE_ENV !== "production") {
+          console.warn(
+            "[api/github/user] Failed to parse GitHub error response",
+            {
+              status: res.status,
+              bodyText,
+              error:
+                parseErr instanceof Error ? parseErr.message : String(parseErr),
+            }
+          );
+        }
         body = undefined;
       }
       const message =
@@ -85,6 +96,9 @@ export async function GET(req: Request) {
     const data = await res.json();
     return NextResponse.json(data, { status: 200 });
   } catch (err) {
+    if (process.env.NODE_ENV !== "production") {
+      console.error("[api/github/user] Request failed", err);
+    }
     const message = err instanceof Error ? err.message : "Unknown error";
     return NextResponse.json({ error: message }, { status: 500 });
   }

@@ -114,7 +114,7 @@ export default function GitHubUserForm({
           disabled={
             isSubmitting || trimmedUsername.length === 0 || !!errors.username
           }
-          className="rounded bg-foreground px-4 py-2 text-background hover:bg-[#383838] dark:hover:bg-[#ccc] cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed disabled:bg-[#9ca3af] dark:disabled:bg-[#3f3f46]">
+          className="rounded bg-foreground px-4 py-2 text-background hover:bg-[#383838] dark:hover:bg-[#ccc] cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed disabled:bg-ui-grey-400 dark:disabled:bg-ui-grey-700">
           {isSubmitting ? "Submitting…" : "Submit"}
         </button>
       </form>
@@ -133,10 +133,7 @@ export default function GitHubUserForm({
             <div className="rounded border p-4">
               <div className="flex items-center gap-4">
                 <Image
-                  src={
-                    (data.avatar_url && data.avatar_url.trim()) ||
-                    "/avatar-placeholder.svg"
-                  }
+                  src={data.avatar_url?.trim() || "/avatar-placeholder.svg"}
                   alt={data.login}
                   width={64}
                   height={64}
@@ -149,7 +146,7 @@ export default function GitHubUserForm({
                   <a
                     href={data.html_url}
                     target="_blank"
-                    rel="noreferrer"
+                    rel="noopener noreferrer"
                     className="text-sm text-blue-600 hover:underline dark:text-blue-400">
                     @{data.login}
                   </a>
@@ -171,7 +168,11 @@ export default function GitHubUserForm({
                 {data.blog && (
                   <p>
                     🔗{" "}
-                    <a href={data.blog} className="hover:underline">
+                    <a
+                      href={data.blog}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="hover:underline">
                       {data.blog}
                     </a>
                   </p>
@@ -181,6 +182,8 @@ export default function GitHubUserForm({
                     🐦{" "}
                     <a
                       href={`https://twitter.com/${data.twitter_username}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
                       className="hover:underline">
                       @{data.twitter_username}
                     </a>

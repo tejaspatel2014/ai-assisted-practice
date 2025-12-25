@@ -7,6 +7,9 @@ jest.mock("next/navigation", () => ({
 }));
 
 describe("FigmaLinkButton", () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
   it("renders default sm with black underline and 14px text", () => {
     render(<FigmaLinkButton />);
     const el = screen.getByText("Shop Now");
@@ -59,5 +62,51 @@ describe("FigmaLinkButton", () => {
     const el = screen.getByText("Go");
     fireEvent.click(el);
     expect(mockPush).toHaveBeenCalledWith("/shop");
+  });
+
+  it("opens external link in new tab with security params when target=_blank", () => {
+    const openSpy = jest
+      .spyOn(window, "open")
+      .mockImplementation(() => null as any);
+    render(
+      <FigmaLinkButton href="https://example.com" target="_blank" label="Ext" />
+    );
+    const el = screen.getByText("Ext");
+    fireEvent.click(el);
+    expect(openSpy).toHaveBeenCalledWith(
+      "https://example.com",
+      "_blank",
+      "noopener,noreferrer"
+    );
+    openSpy.mockRestore();
+  });
+
+  it("opens external link in same tab with security params when target not set", () => {
+    const openSpy = jest
+      .spyOn(window, "open")
+      .mockImplementation(() => null as any);
+    render(<FigmaLinkButton href="https://example.com" label="Ext2" />);
+    const el = screen.getByText("Ext2");
+    fireEvent.click(el);
+    expect(openSpy).toHaveBeenCalledWith(
+      "https://example.com",
+      "_self",
+      "noopener,noreferrer"
+    );
+    openSpy.mockRestore();
+  });
+
+  it("does not navigate when disabled", () => {
+    const openSpy = jest
+      .spyOn(window, "open")
+      .mockImplementation(() => null as any);
+    render(
+      <FigmaLinkButton href="https://example.com" label="NoNav" disabled />
+    );
+    const el = screen.getByText("NoNav");
+    fireEvent.click(el);
+    expect(openSpy).not.toHaveBeenCalled();
+    expect(mockPush).not.toHaveBeenCalled();
+    openSpy.mockRestore();
   });
 });

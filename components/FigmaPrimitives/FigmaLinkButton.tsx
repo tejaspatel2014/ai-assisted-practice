@@ -61,15 +61,24 @@ export default function FigmaLinkButton({
     // External vs internal navigation
     const isInternal = href.startsWith("/");
     if (!isInternal) {
-      if (target === "_blank") {
-        window.open(href, "_blank", "noopener,noreferrer");
-      } else {
-        window.location.assign(href);
-      }
+      const navTarget = target || "_self";
+      window.open(href, navTarget, "noopener,noreferrer");
       return;
     }
     // Internal route: SPA navigate
     router.push(href);
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLButtonElement>) => {
+    if (visuallyDisabled || !href) return;
+    if (e.key === "Enter" || e.key === " ") {
+      e.preventDefault();
+      // mimic click navigation
+      const fakeClick = {
+        defaultPrevented: false,
+      } as unknown as React.MouseEvent<HTMLButtonElement>;
+      handleClick(fakeClick);
+    }
   };
 
   return (
@@ -77,8 +86,9 @@ export default function FigmaLinkButton({
       type="button"
       disabled={visuallyDisabled}
       aria-disabled={ariaDisabled}
-      className={`${baseWrap} ${underlineClass} font-bold ${textClass} ${className} `}
+      className={`${baseWrap} ${underlineClass} font-bold ${textClass} ${className}`}
       onClick={handleClick}
+      onKeyDown={handleKeyDown}
       {...rest}>
       {label}
     </button>
