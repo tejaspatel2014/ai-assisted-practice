@@ -67,7 +67,7 @@ describe("FigmaLinkButton", () => {
   it("opens external link in new tab with security params when target=_blank", () => {
     const openSpy = jest
       .spyOn(window, "open")
-      .mockImplementation(() => null as any);
+      .mockImplementation((): Window | null => null);
     render(
       <FigmaLinkButton href="https://example.com" target="_blank" label="Ext" />
     );
@@ -84,7 +84,7 @@ describe("FigmaLinkButton", () => {
   it("opens external link in same tab with security params when target not set", () => {
     const openSpy = jest
       .spyOn(window, "open")
-      .mockImplementation(() => null as any);
+      .mockImplementation((): Window | null => null);
     render(<FigmaLinkButton href="https://example.com" label="Ext2" />);
     const el = screen.getByText("Ext2");
     fireEvent.click(el);
@@ -99,7 +99,7 @@ describe("FigmaLinkButton", () => {
   it("does not navigate when disabled", () => {
     const openSpy = jest
       .spyOn(window, "open")
-      .mockImplementation(() => null as any);
+      .mockImplementation((): Window | null => null);
     render(
       <FigmaLinkButton href="https://example.com" label="NoNav" disabled />
     );

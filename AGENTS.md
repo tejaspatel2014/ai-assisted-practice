@@ -141,13 +141,15 @@ Reference: https://nextjs.org/docs/app/guides/mcp
 
 - For remote images, consider configuring `images.remotePatterns` in `next.config.ts` to explicitly allow domains like `avatars.githubusercontent.com`.
 
-## TypeScript: No Explicit Any
+## TypeScript: Never Use `any` for Type Declarations
 
-- Avoid `any` entirely; prefer precise types for API payloads and errors.
-- Use `unknown` for untyped inputs, then narrow via checks or schemas.
-- Define small interfaces for responses; keep them minimal and focused.
-- Parse JSON to `unknown` and cast only after validation/narrowing.
+- **Never use `any` for type declarations or type assertions.** Always use precise types, or `unknown` if the type is not known, and then narrow via checks or schemas.
+- For untyped inputs, use `unknown` and validate or narrow before use.
+- Define small, focused interfaces for API responses and errors.
+- When parsing JSON, parse to `unknown` and cast only after validation/narrowing.
 - If a library forces `any`, isolate it and convert using runtime validation (e.g., Zod).
+
+**Do not use `as any` in tests or production code.** For mocks, use the correct return type (e.g., `Window | null` for `window.open`).
 
 Example: replace `any` when parsing an error body.
 
