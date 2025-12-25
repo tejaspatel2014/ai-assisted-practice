@@ -1,3 +1,4 @@
+import FigmaLinkButton from "@/components/FigmaPrimitives/FigmaLinkButton";
 import Hello from "@/components/Hello";
 import Image from "next/image";
 import Link from "next/link";
@@ -59,6 +60,12 @@ export default function Home() {
             className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]">
             Users
           </Link>
+        </div>
+        <div className="mt-8 flex items-center gap-6">
+          <span className="text-sm text-zinc-600 dark:text-zinc-400">
+            Demo:
+          </span>
+          <FigmaLinkButton label="Go to Users" href="/users" />
         </div>
       </main>
     </div>

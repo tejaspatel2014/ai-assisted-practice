@@ -10,6 +10,8 @@
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+  /* Custom UI tokens */
+  --color-ui-grey-500: #808080;
 }
 
 @media (prefers-color-scheme: dark) {

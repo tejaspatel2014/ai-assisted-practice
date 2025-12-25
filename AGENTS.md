@@ -115,6 +115,8 @@ Reference: https://nextjs.org/docs/app/guides/mcp
   - Keep components minimal and typed; prefer `export default` for pages
   - Add tests for new components or critical logic
   - Use Tailwind utilities; avoid inline styles unless necessary
+  - Ensure interactive elements use pointer cursors: add `cursor-pointer` (or `enabled:cursor-pointer`) to clickable buttons and links; for disabled states, prefer `disabled:cursor-default` or `disabled:cursor-not-allowed`
+  - Use Tailwind theme tokens for colors instead of raw hex values. Define tokens under `@theme inline` in [app/globals.css](app/globals.css) (e.g., `--color-ui-grey-500: #808080;`) and reference them via utility classes like `text-ui-grey-500`, `border-ui-grey-500`, etc. When adding new colors, first create a token, then use the corresponding `text-*`/`bg-*`/`border-*` class.
 - Don’t:
   - Modify `next.config.ts` unless required
   - Leak secrets or write credentials to the repo
