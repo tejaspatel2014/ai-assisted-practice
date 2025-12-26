@@ -1,4 +1,4 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
 type GitHubErrorResponse = {
   message?: string;
@@ -12,7 +12,7 @@ type GitHubErrorResponse = {
   }>;
 };
 
-export async function GET(req: Request) {
+export async function GET(req: NextRequest) {
   const url = new URL(req.url);
   const username = url.searchParams.get("username");
 
@@ -44,7 +44,7 @@ export async function GET(req: Request) {
   const token = process.env.GITHUB_PERSONAL_ACCESS_TOKEN;
   if (!token) {
     return NextResponse.json(
-      { error: "Server is missing GITHUB_PERSONAL_ACCESS_TOKEN" },
+      { error: "Server is missing env variable details." },
       { status: 500 }
     );
   }

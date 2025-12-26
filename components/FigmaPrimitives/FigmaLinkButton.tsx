@@ -7,7 +7,7 @@ export type FigmaLinkButtonSize = "sm" | "xs";
 
 export type FigmaLinkButtonProps = {
   label?: string;
-  href?: string; // kept for API compatibility; ignored when rendering button
+  href?: string; 
   target?: "_self" | "_blank" | "_parent" | "_top";
   state?: FigmaLinkButtonState;
   size?: FigmaLinkButtonSize;
@@ -69,17 +69,7 @@ export default function FigmaLinkButton({
     router.push(href);
   };
 
-  const handleKeyDown = (e: React.KeyboardEvent<HTMLButtonElement>) => {
-    if (visuallyDisabled || !href) return;
-    if (e.key === "Enter" || e.key === " ") {
-      e.preventDefault();
-      // mimic click navigation
-      const fakeClick = {
-        defaultPrevented: false,
-      } as unknown as React.MouseEvent<HTMLButtonElement>;
-      handleClick(fakeClick);
-    }
-  };
+  // No keydown handler needed; native button handles keyboard activation.
 
   return (
     <button
@@ -88,7 +78,6 @@ export default function FigmaLinkButton({
       aria-disabled={ariaDisabled}
       className={`${baseWrap} ${underlineClass} font-bold ${textClass} ${className}`}
       onClick={handleClick}
-      onKeyDown={handleKeyDown}
       {...rest}>
       {label}
     </button>

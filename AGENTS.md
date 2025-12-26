@@ -59,7 +59,11 @@ Reference: https://nextjs.org/docs/app/guides/mcp
 ## Tailwind CSS (v4)
 
 - Global styles: `app/globals.css` with Tailwind imported.
-- Theme variables: CSS variables in `:root` and dark mode via `prefers-color-scheme` are already configured.
+- Theme variables: CSS variables in `:root` are already configured.
+- Theme mode: This project does not require dark or light mode.
+  - Do not add theme toggles or mode-specific styling.
+  - Avoid `dark:`/`light:` utilities unless explicitly requested.
+  - Prefer neutral token-based colors that work in a single theme.
 - Use utility classes directly in component `className`.
 
 ## Testing
