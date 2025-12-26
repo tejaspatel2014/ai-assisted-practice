@@ -1,9 +1,13 @@
 {
-	"servers": {
-		"next-js-mcp": {
-			"url": "http://localhost:3000/_next/mcp",
-			"type": "http"
-		}
-	},
-	"inputs": []
+  "servers": {
+    "next-js-mcp": {
+      "url": "http://localhost:3000/_next/mcp",
+      "type": "http"
+    },
+    "figma": {
+      "type": "http",
+      "url": "https://mcp.figma.com/mcp"
+    }
+  },
+  "inputs": []
 }
