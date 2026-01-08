@@ -34,13 +34,6 @@ export default function RootLayout({
               className="text-zinc-950 dark:text-zinc-50 font-semibold">
               Home
             </Link>
-            <div className="flex items-center gap-6">
-              <Link
-                href="/users"
-                className="text-sm text-zinc-700 hover:underline dark:text-zinc-300">
-                Users
-              </Link>
-            </div>
           </nav>
         </header>
         {children}
