@@ -1,8 +1,9 @@
 "use client";
 
+import type { ShapeType } from "@/components/canvasUtils";
 import React, { useEffect, useMemo, useRef } from "react";
 
-export type ShapeType = "rectangle" | "circle" | "triangle" | "line";
+export type { ShapeType };
 
 export type Shape =
   | {
@@ -137,7 +138,11 @@ export function CanvasBoard({
         ref={canvasRef}
         className="block h-[480px] w-full"
         onPointerDown={handlePointerDown}
-      />
+        role="img"
+        aria-label="Interactive shape placement canvas. Click or tap to place shapes on the board.">
+        Your browser does not support the HTML canvas element. This is an
+        interactive area for placing shapes on the board.
+      </canvas>
     </div>
   );
 }

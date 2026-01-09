@@ -31,6 +31,9 @@ export default function DesignBoard() {
       </aside>
       <main>
         <CanvasBoard shapes={shapes} onPlace={placeAt} />
+        <div data-testid="shape-count" className="sr-only">
+          {shapes.length}
+        </div>
       </main>
     </div>
   );

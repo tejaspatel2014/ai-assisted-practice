@@ -1,6 +1,8 @@
 "use client";
 
-export type ShapeType = "rectangle" | "circle" | "triangle" | "line";
+import type { ShapeType } from "@/components/canvasUtils";
+
+export type { ShapeType };
 
 export function ShapePalette({
   selected,

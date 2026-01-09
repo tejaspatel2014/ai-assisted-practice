@@ -24,13 +24,16 @@ describe("DesignBoard", () => {
     expect(el).toBeTruthy();
     if (!el) return;
 
+    const shapeCount = screen.getByTestId("shape-count");
+    expect(shapeCount).toHaveTextContent("0");
+
     const rect = el.getBoundingClientRect();
     fireEvent.pointerDown(el, {
       clientX: rect.left + rect.width / 2,
       clientY: rect.top + rect.height / 2,
     });
 
-    // Assert no runtime error; drawing is skipped in JSDOM
-    expect(true).toBe(true);
+    // Assert that a shape was added
+    expect(shapeCount).toHaveTextContent("1");
   });
 });
