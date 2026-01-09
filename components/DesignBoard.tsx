@@ -2,6 +2,7 @@
 
 import CanvasBoard, { Shape } from "@/components/CanvasBoard";
 import ShapePalette, { ShapeType } from "@/components/ShapePalette";
+import { computePlacedShape } from "@/components/canvasUtils";
 import { useCallback, useState } from "react";
 
 export default function DesignBoard() {
@@ -9,28 +10,10 @@ export default function DesignBoard() {
   const [shapes, setShapes] = useState<Shape[]>([]);
 
   const placeAt = useCallback(
-    (x: number, y: number) => {
+    (x: number, y: number, bounds: { width: number; height: number }) => {
       const id =
         globalThis.crypto?.randomUUID?.() ?? `${Date.now()}-${Math.random()}`;
-      const next: Shape = (() => {
-        switch (selected) {
-          case "rectangle":
-            return {
-              id,
-              type: "rectangle",
-              x: x - 40,
-              y: y - 40,
-              width: 80,
-              height: 80,
-            };
-          case "circle":
-            return { id, type: "circle", x, y, radius: 40 };
-          case "triangle":
-            return { id, type: "triangle", x, y, size: 80 };
-          case "line":
-            return { id, type: "line", x1: x - 50, y1: y, x2: x + 50, y2: y };
-        }
-      })();
+      const next: Shape = computePlacedShape(selected, x, y, bounds, id);
       setShapes((prev) => [...prev, next]);
     },
     [selected]

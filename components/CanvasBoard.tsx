@@ -30,7 +30,11 @@ export function CanvasBoard({
   className,
 }: {
   shapes: Shape[];
-  onPlace: (x: number, y: number) => void;
+  onPlace: (
+    x: number,
+    y: number,
+    bounds: { width: number; height: number }
+  ) => void;
   className?: string;
 }) {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
@@ -116,7 +120,11 @@ export function CanvasBoard({
     const rect = canvas.getBoundingClientRect();
     const x = e.clientX - rect.left;
     const y = e.clientY - rect.top;
-    onPlace(Math.round(x), Math.round(y));
+    const bounds = {
+      width: Math.round(rect.width),
+      height: Math.round(rect.height),
+    };
+    onPlace(Math.round(x), Math.round(y), bounds);
   }
 
   return (

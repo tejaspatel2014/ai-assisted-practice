@@ -2,7 +2,7 @@
  * @jest-environment node
  */
 import { GET } from "@/app/api/github/user/route";
-import { NextRequest, NextResponse } from "next/server";
+import { NextRequest } from "next/server";
 
 describe("GET /api/github/user - GitHub 404", () => {
   const originalFetch = global.fetch;
@@ -28,7 +28,9 @@ describe("GET /api/github/user - GitHub 404", () => {
     );
     const res = await GET(req);
 
-    expect(res).toBeInstanceOf(NextResponse);
+    // Some environments may not expose NextResponse as a constructor.
+    // Assert against the Web Response instead for robustness.
+    expect(res).toBeInstanceOf(Response);
     expect(res.status).toBe(404);
 
     const json = await res.json();
