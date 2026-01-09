@@ -120,8 +120,8 @@ Reference: https://nextjs.org/docs/app/guides/mcp
   - Add tests for new components or critical logic
   - Use Tailwind utilities; avoid inline styles unless necessary
   - Ensure interactive elements use pointer cursors: add `cursor-pointer` (or `enabled:cursor-pointer`) to clickable buttons and links; for disabled states, prefer `disabled:cursor-default` or `disabled:cursor-not-allowed`
-  - Use Tailwind theme tokens for colors instead of raw hex values. Define tokens under `@theme inline` in [app/globals.css](app/globals.css) (e.g., `--color-ui-grey-500: #808080;`) and reference them via utility classes like `text-ui-grey-500`, `border-ui-grey-500`, etc. When adding new colors, first create a token, then use the corresponding `text-*`/`bg-*`/`border-*` class.
-- Don’t:
+  - Use Tailwind theme tokens for colors instead of raw hex values. Define tokens under `@theme inline` in [app/globals.css](app/globals.css) (e.g., `--color-ui-grey-500: #808080;`) and reference them via utility classes like `text-ui-grey-500`, `border-ui-grey-500`, etc. When adding new colors, first create a token, then use the corresponding `text-*`/`bg-*`/`border-*` class. - Use generalized constants for repeated values. Define constants in a dedicated file (e.g., `lib/constants.ts` or at the top of a module) rather than scattering hardcoded numbers and strings across the project. This improves maintainability and makes updates easier.
+  - Add HTML `role` attributes to relevant elements for improved accessibility. Use semantic roles like `role="navigation"`, `role="button"`, `role="dialog"`, etc., when native HTML elements don't convey sufficient semantic meaning.- Don’t:
   - Modify `next.config.ts` unless required
   - Leak secrets or write credentials to the repo
   - Introduce non-Next.js routing libraries

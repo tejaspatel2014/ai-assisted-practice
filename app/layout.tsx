@@ -29,11 +29,18 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <header className="sticky top-0 z-10 border-b border-black/[.08] bg-white dark:border-white/[.145] dark:bg-black">
           <nav className="mx-auto flex max-w-3xl items-center justify-between px-6 py-4">
-            <Link
-              href="/"
-              className="text-zinc-950 dark:text-zinc-50 font-semibold">
-              Home
-            </Link>
+            <div className="flex items-center gap-4">
+              <Link
+                href="/"
+                className="text-zinc-950 dark:text-zinc-50 font-semibold">
+                Home
+              </Link>
+              <Link
+                href="/design"
+                className="text-zinc-950 dark:text-zinc-50 font-semibold">
+                Design
+              </Link>
+            </div>
           </nav>
         </header>
         {children}
